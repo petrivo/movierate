@@ -1,3 +1,6 @@
+from movie import Movie
+
+
 class Node():
 
     def __init__(self, data):
@@ -26,6 +29,15 @@ class Node():
         print(self.data)
         if self.right:
             self.right.inorder()
+
+
+A = Movie('A')
+B = Movie('B')
+D = Movie('D')
+C = Movie('C')
+F = Movie('F')
+
+li = []
 
 node = Node(12)
 node.insert(2)
