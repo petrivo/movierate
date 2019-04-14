@@ -23,26 +23,37 @@ class Node():
         else:
             self.data = data
 
-    def inorder(self):
+    def inorder(self, in_list):
         if self.left:
-            self.left.inorder()
-        print(self.data)
+            self.left.inorder(in_list)
+        # print(self.data)
+        in_list.append(self.data)
         if self.right:
-            self.right.inorder()
+            self.right.inorder(in_list)
 
 
-A = Movie('A')
-B = Movie('B')
-D = Movie('D')
-C = Movie('C')
-F = Movie('F')
+# a = Movie('A')
+# b = Movie('B')
+# d = Movie('D')
+# c = Movie('C')
+# f = Movie('F')
 
-li = []
 
-node = Node(12)
-node.insert(2)
-node.insert(13)
-node.insert(3)
-node.insert(432)
+# a.like_more_than(b)
+# a.like_more_than(c)
+# d.like_more_than(a)
+# a.like_more_than(f)
+# c.like_more_than(b)
+# b.like_more_than(d)
+# b.like_more_than(f)
+# c.like_more_than(d)
+# f.like_more_than(c)
+# d.like_more_than(f)
 
-node.inorder()
+# node = Node(a)
+# node.insert(b)
+# node.insert(c)
+# node.insert(d)
+# node.insert(f)
+
+# node.inorder()
