@@ -1,4 +1,6 @@
 from user import User
+from movie_model import Movie
+
 
 node = User.query.get(1).built_tree
 
