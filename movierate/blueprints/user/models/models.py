@@ -1,8 +1,8 @@
-
-from user_movie_preference import UserMoviePreference
+from .user_movie_preference import UserMoviePreference
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from app import db
+from extensions import db
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -23,7 +23,7 @@ class User(UserMixin, db.Model):
     user_movie_preference = db.relationship(UserMoviePreference, backref='user')
 
     # Activity tracking
-    sign_in_count = db.Colimn(db.Integer, nullable=False, default=0)
+    sign_in_count = db.Column(db.Integer, nullable=False, default=0)
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
@@ -38,4 +38,9 @@ class User(UserMixin, db.Model):
 
         return None
 
-    
+    @classmethod
+    def find_by_email(cls, email):
+        return User.query.filter(User.email == email).first()
+
+    def authenticated(self, password):
+        return check_password_hash(self.password, password)

@@ -1,4 +1,4 @@
-from app import db
+from extensions import db
 
 
 class UserMoviePreference(db.Model):
@@ -9,6 +9,6 @@ class UserMoviePreference(db.Model):
     movie_id = db.Column(db.Integer(), db.ForeignKey('movie.id'),
                          nullable=False)
     other_movie_id = db.Column(db.Integer(), db.ForeignKey('movie.id'))
-    
+
     movie = db.relationship("Movie", foreign_keys=[movie_id])
     other_movie = db.relationship("Movie", foreign_keys=[other_movie_id])
