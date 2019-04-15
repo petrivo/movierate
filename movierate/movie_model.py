@@ -1,5 +1,5 @@
 from app import db
-from user_like_movie import UserLikesMovie
+from user_movie_preference import UserMoviePreference
 
 
 class Movie(db.Model):

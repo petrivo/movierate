@@ -1,7 +1,7 @@
 from app import db
 from user import User
 from movie_model import Movie
-from user_like_movie import UserLikesMovie
+from user_movie_preference import UserMoviePreference
 from movie import Movie as Mov
 from algo import Node
 from sqlalchemy import update
@@ -19,25 +19,25 @@ for e in movies:
     db.session.add(mov)
     db.session.commit()
 
-usr_mov0 = UserLikesMovie(user_id=1, movie_id=1, other_movie_id=2,
+usr_mov0 = UserMoviePreference(user_id=1, movie_id=1, other_movie_id=2,
                           liked_more_than_the_other=True)
-usr_mov1 = UserLikesMovie(user_id=1, movie_id=1, other_movie_id=3,
+usr_mov1 = UserMoviePreference(user_id=1, movie_id=1, other_movie_id=3,
                           liked_more_than_the_other=True)
-usr_mov2 = UserLikesMovie(user_id=1, movie_id=1, other_movie_id=4,
+usr_mov2 = UserMoviePreference(user_id=1, movie_id=1, other_movie_id=4,
                           liked_more_than_the_other=False)
-usr_mov3 = UserLikesMovie(user_id=1, movie_id=1, other_movie_id=5,
+usr_mov3 = UserMoviePreference(user_id=1, movie_id=1, other_movie_id=5,
                           liked_more_than_the_other=True)
-usr_mov4 = UserLikesMovie(user_id=1, movie_id=2, other_movie_id=3,
+usr_mov4 = UserMoviePreference(user_id=1, movie_id=2, other_movie_id=3,
                           liked_more_than_the_other=False)
-usr_mov5 = UserLikesMovie(user_id=1, movie_id=2, other_movie_id=4,
+usr_mov5 = UserMoviePreference(user_id=1, movie_id=2, other_movie_id=4,
                           liked_more_than_the_other=True)
-usr_mov6 = UserLikesMovie(user_id=1, movie_id=2, other_movie_id=5,
+usr_mov6 = UserMoviePreference(user_id=1, movie_id=2, other_movie_id=5,
                           liked_more_than_the_other=True)
-usr_mov7 = UserLikesMovie(user_id=1, movie_id=3, other_movie_id=4,
+usr_mov7 = UserMoviePreference(user_id=1, movie_id=3, other_movie_id=4,
                           liked_more_than_the_other=True)
-usr_mov8 = UserLikesMovie(user_id=1, movie_id=3, other_movie_id=5,
+usr_mov8 = UserMoviePreference(user_id=1, movie_id=3, other_movie_id=5,
                           liked_more_than_the_other=False)
-usr_mov9 = UserLikesMovie(user_id=1, movie_id=4, other_movie_id=5,
+usr_mov9 = UserMoviePreference(user_id=1, movie_id=4, other_movie_id=5,
                           liked_more_than_the_other=True)
 
 db.session.add(user1)
@@ -55,7 +55,7 @@ db.session.add(usr_mov9)
 
 db.session.commit()
 
-user_preferences = UserLikesMovie.query.filter(UserLikesMovie.user_id == 1)
+user_preferences = UserMoviePreference.query.filter(UserMoviePreference.user_id == 1)
 
 # print(user_preferences)
 # print(user_preferences.all())

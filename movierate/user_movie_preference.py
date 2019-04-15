@@ -1,7 +1,7 @@
 from app import db
 
 
-class UserLikesMovie(db.Model):
+class UserMoviePreference(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     liked_more_than_the_other = db.Column(db.Boolean())
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'), nullable=False)
