@@ -1,8 +1,8 @@
 from app import create_app
 from extensions import db
-from movierate.blueprints.user.models import User
-from movie_model import Movie
-from user_movie_preference import UserMoviePreference
+from blueprints.user.models.models import User
+from blueprints.user.models.movie_model import Movie
+from blueprints.user.models.user_movie_preference import UserMoviePreference
 from movie import Movie as Mov
 from algo import Node
 

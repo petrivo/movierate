@@ -1,5 +1,14 @@
-{% extends "layouts/base.html" %}
+{% extends 'layouts/base.html' %}
 
-<div>
-    {{form.label}}
-</div>
+{% block body %}
+
+
+<form method="POST" action="{{url_for('user.login')}}">
+          {{ form.csrf_token }}
+          {{form.email.label}}
+          {{form.email()}}
+          {{form.password.label}}
+          {{form.password()}}
+        <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}
