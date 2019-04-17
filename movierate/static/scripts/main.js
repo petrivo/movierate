@@ -5,8 +5,7 @@ $(document).ready(() => {
         let searchText = $('#searchText').val();
         console.log(searchText);
         getMovie(searchText);
-        return false;
-        
+        return false; 
     });
 });
 
@@ -21,11 +20,33 @@ async function getMovie(text) {
         <div class="well text-center">
           <img src="${movie.Poster}">
           <h5>${movie.Title}</h5>
-          <a onclick="movieSelected('${movie.imdbID}')" class="btn btn-primary" href="#">Movie Details</a>
+          <a onclick="movieSelected(this,'${movie.imdbID}')" class="btn btn-primary mbtn" href="#">Movie Details</a>
         </div>
         </div>
         `;
     });
 
     $('#movies').html(output);
+}
+
+// $(document.body).on("click",".mbtn", function () {
+//     var addressValue = $(this).attr("href");
+//     console.log(addressValue );
+//     $(this).attr('class', 'btn btn-outline-success my-2 my-sm-0');
+// });
+
+function movieSelected(obj,movieSelected){
+    console.log(obj);
+    console.log(movieSelected);
+    $.ajax({
+        type: "POST",
+        url: '/add_movie',
+        data: JSON.stringify({'movie_id': movieSelected}),
+        // dataType: 'json', //commented out to have success running
+        contentType: 'application/json',
+        success: () => {
+            console.log('success');
+            $(obj).attr('class', 'btn btn-outline-success my-2 my-sm-0');
+        }
+    });
 }

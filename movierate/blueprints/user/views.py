@@ -7,6 +7,7 @@ from flask_login import (
     logout_user,
     current_user,
     logout_user)
+import sys
 
 user = Blueprint('user', __name__, template_folder='templates')
 
@@ -37,9 +38,16 @@ def signout():
     return redirect(url_for('user.login'))
 
 
-@user.route('/dashboard')
+@user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
+    if request.method == 'POST':
+        # print('posted', file=sys.stderr)
+        print(request.get_json())
+        print(request.get_json()['movie_id'])
+
+    #     return redirect(url_for('user.dashboard'))
+    # else:    
     built_preference_tree = current_user.built_tree
     data = []
     built_preference_tree.inorder(data)
@@ -48,3 +56,10 @@ def dashboard():
     return render_template('user/dashboard.html')
 
 
+@user.route('/add_movie', methods=['POST'])
+@login_required
+def add_movie():
+    user = current_user
+    movie_preference = user.user_movie_preference
+    request.get_json()['movie_id']
+    pass
