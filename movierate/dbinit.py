@@ -14,6 +14,8 @@ db.create_all()
 
 # Only add seed user
 user1 = User(username="abc", email="ore@st.com", password="orestone")
+db.session.add(user1)
+db.session.commit()
 
 # movies = list("ABCDF")
 
@@ -97,4 +99,4 @@ user1 = User(username="abc", email="ore@st.com", password="orestone")
 # # update(User).where(User.id == 1).values(built_tree=node.inorder_list)
 # user = User.query.get(1)
 # user.built_tree = node
-db.session.commit()
+# db.session.commit()

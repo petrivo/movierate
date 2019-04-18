@@ -1,6 +1,9 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash, session
 from .forms import LoginForm
+import sqlalchemy
 from .models.models import User
+from .models.movie_model import Movie
+from .models.user_movie_preference import UserMoviePreference
 from flask_login import (
     login_required,
     login_user,
@@ -11,12 +14,13 @@ import sys
 
 user = Blueprint('user', __name__, template_folder='templates')
 
+
 @user.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         flash('You are already signed in')
         return redirect(url_for('user.dashboard'))
-    
+
     form = LoginForm()
 
     if form.validate_on_submit():
@@ -47,19 +51,54 @@ def dashboard():
         print(request.get_json()['movie_id'])
 
     #     return redirect(url_for('user.dashboard'))
-    # else:    
-    built_preference_tree = current_user.built_tree
-    data = []
-    built_preference_tree.inorder(data)
-    for obj in data:
-        flash(obj.title)
+    # else:
+
+    # built_preference_tree = current_user.built_tree
+    # data = []
+    # built_preference_tree.inorder(data)
+    # for obj in data:
+    #     flash(obj.title)
     return render_template('user/dashboard.html')
 
 
 @user.route('/add_movie', methods=['POST'])
 @login_required
 def add_movie():
-    user = current_user
-    movie_preference = user.user_movie_preference
-    request.get_json()['movie_id']
-    pass
+    omdb_id = request.get_json()['movie_id']
+    # if not omdb_id:
+    #     return None
+
+    print(omdb_id)
+
+    movie = Movie.query.filter(Movie.omdb_id == omdb_id).first()
+
+    if not movie:
+        movie = Movie(omdb_id=omdb_id)
+        movie.save()
+
+    params = {
+        'user_id': current_user.id,
+        'movie_id': movie.id,
+    }
+    usr_mov = UserMoviePreference(**params)
+
+    try:
+        usr_mov.save()
+        return 'movie saved'
+    except sqlalchemy.exc.SQLAlchemyError as err:
+        print(err)
+        return 'not saved'
+
+
+@user.route('/compare')
+@login_required
+def compare():
+    # .with_entities() TODO: still has to be resolved distinct
+    user_movies = UserMoviePreference.query.filter(
+        UserMoviePreference.user_id == current_user.id)
+    movies_without_preference = user_movies.filter(UserMoviePreference.
+                                            other_movie_id == None).distinct().all()
+
+    flash(movies_without_preference)
+
+    return render_template('user/compare.html', data=movies_without_preference)

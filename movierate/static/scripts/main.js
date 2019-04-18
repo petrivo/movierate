@@ -20,13 +20,29 @@ async function getMovie(text) {
         <div class="well text-center">
           <img src="${movie.Poster}">
           <h5>${movie.Title}</h5>
-          <a onclick="movieSelected(this,'${movie.imdbID}')" class="btn btn-primary mbtn" href="#">Movie Details</a>
+          <a onclick="movieSelected(this,'${movie.imdbID}')" class="btn btn-primary mbtn">Movie Details</a>
         </div>
         </div>
         `;
     });
 
     $('#movies').html(output);
+}
+
+async function renderMovie(id) {
+    console.log('rendering');
+    const response = await fetch('http://www.omdbapi.com/?i=' + id + API_KEY);
+    const movie = await response.json(); //extract JSON from the http response
+    let output = `
+        <div class="col-md-3 col-sm-4">
+        <div class="well text-center">
+          <img src="${movie.Poster}">
+          <h5>${movie.Title}</h5>
+          <a onclick="likeThisMore(this,'${movie.imdbID}')" class="btn btn-primary mbtn">Prefer</a>
+        </div>
+        </div>
+        `;
+    $('#movies').append(output);
 }
 
 // $(document.body).on("click",".mbtn", function () {
@@ -47,6 +63,11 @@ function movieSelected(obj,movieSelected){
         success: () => {
             console.log('success');
             $(obj).attr('class', 'btn btn-outline-success my-2 my-sm-0');
+            $(obj).text('Selected')
+
+        },
+        error: () => {
+            $(obj).attr('class', 'btn btn-danger my-2 my-sm-0');
         }
     });
 }

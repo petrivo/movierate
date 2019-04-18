@@ -2,9 +2,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from extensions import db
 from .user_movie_preference import UserMoviePreference
+from .util_sqlalchemy import ResourceMixin
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, ResourceMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Authentication
@@ -28,7 +29,6 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super().__init__(**kwargs)
-
         self.password = User.encrypt_password(kwargs.get('password', ''))
 
     @classmethod
