@@ -20,15 +20,14 @@ class User(UserMixin, ResourceMixin, db.Model):
 
     # BST for movies that have been rated
     built_tree = db.Column(db.PickleType())
+    comparing_list = db.Column(db.PickleType())
     
     # Relationships
     user_movie_preference = db.relationship(UserMoviePreference, backref='user')
 
     # Activity tracking
     sign_in_count = db.Column(db.Integer, nullable=False, default=0)
-    
-    comparing_list = []
-
+    seen_movies_count = db.Column(db.Integer, nullable=False, default=0)
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super().__init__(**kwargs)
@@ -57,7 +56,6 @@ class User(UserMixin, ResourceMixin, db.Model):
         comp_list = []
 
         for e in movies_without_preference:
-            # movie = {'id': e[0], 'omdb_id': Movie.query.get(e[0]).omdb_id}
             movie = Movie.query.get(e[0])
             comp_list.append(movie)
         
@@ -69,5 +67,10 @@ class User(UserMixin, ResourceMixin, db.Model):
                 vs.append(compare)
 
         self.comparing_list = vs
+        db.session.commit()
 
         return vs
+
+    def increase_seen_movies_count(self):
+        self.seen_movies_count += 1
+        db.session.commit()
