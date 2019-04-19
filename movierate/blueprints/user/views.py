@@ -93,12 +93,24 @@ def add_movie():
 @user.route('/compare')
 @login_required
 def compare():
-    # .with_entities() TODO: still has to be resolved distinct
-    user_movies = UserMoviePreference.query.filter(
-        UserMoviePreference.user_id == current_user.id)
-    movies_without_preference = user_movies.filter(UserMoviePreference.
-                                            other_movie_id == None).distinct().all()
+    # TODO has to be generated or rebuilt one time an later just used
+    current_user.generate_movie_comparison_list()
+    compare_two = current_user.comparing_list[-1]
+    flash(compare_two)
+    return render_template('user/compare.html', data=compare_two)
 
-    flash(movies_without_preference)
 
-    return render_template('user/compare.html', data=movies_without_preference)
+@user.route('/preferred_movie', methods=['POST'])
+@login_required
+def preferred():
+    movie_won = request.get_json()['movie_id']
+
+    competing_movies = current_user.comparing_list.pop()
+
+    movie = competing_movies[0]
+    other_movie = competing_movies[1]
+    
+    if movie[movie_von]:
+        pass 
+
+    pass

@@ -1,4 +1,4 @@
-const API_KEY = '&apikey=e73fc890'
+const API_KEY = '&apikey=e73fc890';
 
 $(document).ready(() => {
     $('#searchForm').on('submit', (e) => {
@@ -38,18 +38,33 @@ async function renderMovie(id) {
         <div class="well text-center">
           <img src="${movie.Poster}">
           <h5>${movie.Title}</h5>
-          <a onclick="likeThisMore(this,'${movie.imdbID}')" class="btn btn-primary mbtn">Prefer</a>
+          <a onclick="moviePreferred('${movie.imdbID}')" class="btn btn-primary mbtn">Prefer</a>
         </div>
         </div>
         `;
     $('#movies').append(output);
 }
 
-// $(document.body).on("click",".mbtn", function () {
-//     var addressValue = $(this).attr("href");
-//     console.log(addressValue );
-//     $(this).attr('class', 'btn btn-outline-success my-2 my-sm-0');
-// });
+function moviePreferred(id){
+    console.log(id);
+    $.ajax({
+        type: "POST",
+        url: '/preferred_movie',
+        data: JSON.stringify({'movie_id': id}),
+        // dataType: 'json', //commented out to have success running
+        contentType: 'application/json',
+        success: () => {
+            console.log('success');
+            $(obj).attr('class', 'btn btn-outline-success my-2 my-sm-0');
+            $(obj).text('Selected')
+
+        },
+        error: () => {
+            $(obj).attr('class', 'btn btn-danger my-2 my-sm-0');
+        }
+    });
+}
+
 
 function movieSelected(obj,movieSelected){
     console.log(obj);

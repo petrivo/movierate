@@ -3,17 +3,23 @@
 {% block title %}Compare{% endblock %}
 
 {% block onload %}
-
-    renderMovie('{{ data[0].movie.omdb_id }}');
-    renderMovie('{{data[1].movie.omdb_id}}');
-
+        {#renderMovie('{{ data[0][0]['omdb_id'] }}');
+        renderMovie('{{ data[0][1]['omdb_id'] }}');#}
 {% endblock %}
 
 {% block body %}
 <br>
 {#{% if len(data) >= 2 %}#}
 <div class="container">
-    <div id="movies" class="row"></div>
+    <div id="movies" class="row">        
+    </div>
 </div>
 {#{% endif %}#}
 {% endblock %}
+
+{% block scripts %} 
+        <script type="text/javascript">
+            renderMovie("{{ data[0].omdb_id }}");
+            {#renderMovie("{{ data[0][1]['omdb_id'] }}");#}
+        </script>  
+{% endblock %} 

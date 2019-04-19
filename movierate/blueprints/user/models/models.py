@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from extensions import db
+from .movie_model import Movie
 from .user_movie_preference import UserMoviePreference
 from .util_sqlalchemy import ResourceMixin
 
@@ -25,6 +26,8 @@ class User(UserMixin, ResourceMixin, db.Model):
 
     # Activity tracking
     sign_in_count = db.Column(db.Integer, nullable=False, default=0)
+    
+    comparing_list = []
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
@@ -44,3 +47,27 @@ class User(UserMixin, ResourceMixin, db.Model):
 
     def authenticated(self, password):
         return check_password_hash(self.password, password)
+
+    def generate_movie_comparison_list(self):
+        user_movies = UserMoviePreference.query.with_entities(
+            UserMoviePreference.movie_id).filter(
+            UserMoviePreference.user_id == self.id)
+        movies_without_preference = user_movies.filter(UserMoviePreference.
+                                                other_movie_id == None).distinct().all()
+        comp_list = []
+
+        for e in movies_without_preference:
+            # movie = {'id': e[0], 'omdb_id': Movie.query.get(e[0]).omdb_id}
+            movie = Movie.query.get(e[0])
+            comp_list.append(movie)
+        
+        vs = []
+        for i in range(len(comp_list)):
+            curr = comp_list[i]
+            for e in comp_list[i+1:]:  
+                compare = [curr, e]
+                vs.append(compare)
+
+        self.comparing_list = vs
+
+        return vs
