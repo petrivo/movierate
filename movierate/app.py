@@ -1,9 +1,8 @@
 from flask import Flask
-from extensions import login_manager, db #, bootstrap
+from extensions import login_manager, db
 from blueprints.page.views import page
 from blueprints.user.views import user
 from blueprints.user.models.models import User
-from flask_bootstrap import Bootstrap
 
 
 def create_app():
@@ -14,7 +13,6 @@ def create_app():
     app.register_blueprint(page)
     app.register_blueprint(user)
 
-    Bootstrap(app)
     extensions(app)
 
     return app
@@ -23,8 +21,6 @@ def create_app():
 def extensions(app):
     login_manager.init_app(app)
     db.init_app(app)
-    # bootstrap.init_app(app)
-
 
 
 @login_manager.user_loader

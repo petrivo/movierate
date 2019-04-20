@@ -2,15 +2,16 @@ from flask import Blueprint, render_template, request, url_for, redirect, flash
 from .forms import LoginForm
 from .models.models import User
 from .models.user_movie_preference import UserMoviePreference
-from flask_login import (
-    login_required,
-    login_user,
-    current_user,
-    logout_user)
-import sys
+from flask_login import login_required, login_user, current_user, logout_user
 import json
 
 user = Blueprint('user', __name__, template_folder='templates')
+
+
+@user.route('/register', methods=['GET', 'POST'])
+def register():
+    # TODO
+    pass
 
 
 @user.route('/login', methods=['GET', 'POST'])
@@ -61,17 +62,15 @@ def add_movie():
 
     return inserted
 
-@user.route('/compare', methods=['GET', 'POST'])
+
+@user.route('/compare')
 @login_required
 def compare():
-    if request.method == 'POST':
-        # _id = int(request.get_json()['database_id'])
-        # like_more_than_other = bool(int(request.get_json()['preferred']))
-        print(request.form.get('db_id'), file=sys.stderr)
-        print('POST')
-        # UserMoviePreference.update(_id, like_more_than_other)
-
     compare_two = UserMoviePreference.get_compare_for_user(current_user.id)
+    if not compare_two:
+        flash('You have compared all your movies')
+        return redirect(url_for('user.dashboard'))
+        
     flash(compare_two)
     return render_template('user/compare.html', data=compare_two)
 

@@ -3,10 +3,8 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block body %} Hi {{current_user.email}}
-
 <form class="form-inline my-2 my-lg-0" id="searchForm">
     <input class="form-control mr-sm-2" type="search" id="searchText" placeholder="Search" aria-label="Search">
-    <!-- <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button> -->
 </form>
 
 <div class="container">
@@ -14,12 +12,10 @@
     </ul>
     <div id="movies" class="row"></div>
 </div>
-
-
 {% endblock %}
 
-{% block scripts %} 
-        <script type="text/javascript">
-            renderPreferenceList({{data|safe}});
-        </script>  
+{% block scripts %}
+<script type="text/javascript">
+    renderPreferenceList({{ data | safe }});
+</script>
 {% endblock %}

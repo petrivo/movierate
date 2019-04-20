@@ -1,6 +1,3 @@
-from movie import Movie
-
-
 class Node():
 
     def __init__(self, data):

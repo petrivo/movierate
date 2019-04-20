@@ -1,6 +1,7 @@
 from extensions import db
 from .movie_model import Movie
 from .util_sqlalchemy import ResourceMixin
+import sqlalchemy
 
 
 class UserMoviePreference(db.Model, ResourceMixin):
@@ -27,7 +28,10 @@ class UserMoviePreference(db.Model, ResourceMixin):
         compare_two = UserMoviePreference.query.filter(
             UserMoviePreference.user_id == user_id,
             UserMoviePreference.liked_more_than_the_other == None).first()
-
+        
+        if compare_two is None:
+            return False
+            
         return [compare_two.id, compare_two.movie, compare_two.other_movie]
 
     @classmethod
@@ -53,13 +57,11 @@ class UserMoviePreference(db.Model, ResourceMixin):
 
         usr_mov = UserMoviePreference(**params)
         inserted = False
-        last_id = None
         # TODO should return json for ajax
         # TODO ? move it to general resource mixin?
         try:
             usr_mov.save()
             inserted = True
-            last_id = usr_mov.id
         except sqlalchemy.exc.SQLAlchemyError as err:
             print(err)
 
@@ -87,7 +89,6 @@ class UserMoviePreference(db.Model, ResourceMixin):
         if inserted and len(seen_movie_ids) > 2:
             last_insertion = UserMoviePreference.query.get(seen_movie_ids[-1][0])
             last_insertion.other_movie_id = seen_movie_ids[0][1]
-
 
             sn_m = set(x[1] for x in seen_movie_ids[1:-1])
             print(sn_m)
