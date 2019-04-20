@@ -1,16 +1,14 @@
-from flask import Blueprint, render_template, request, url_for, redirect, flash, session
+from flask import Blueprint, render_template, request, url_for, redirect, flash
 from .forms import LoginForm
-import sqlalchemy
 from .models.models import User
-from .models.movie_model import Movie
 from .models.user_movie_preference import UserMoviePreference
 from flask_login import (
     login_required,
     login_user,
-    logout_user,
     current_user,
     logout_user)
 import sys
+import json
 
 user = Blueprint('user', __name__, template_folder='templates')
 
@@ -45,9 +43,11 @@ def signout():
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    # TODO display inorder if possible
-
-    return render_template('user/dashboard.html')
+    bst = current_user.update_tree()
+    in_list = []
+    bst.inorder(in_list)
+    in_list = [x.title for x in in_list]
+    return render_template('user/dashboard.html', data=json.dumps(in_list))
 
 
 @user.route('/add_movie', methods=['POST'])

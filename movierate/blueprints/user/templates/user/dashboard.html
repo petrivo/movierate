@@ -10,7 +10,16 @@
 </form>
 
 <div class="container">
+    <ul class="list-group" id="movies_inorder">
+    </ul>
     <div id="movies" class="row"></div>
 </div>
 
+
+{% endblock %}
+
+{% block scripts %} 
+        <script type="text/javascript">
+            renderPreferenceList({{data|safe}});
+        </script>  
 {% endblock %}

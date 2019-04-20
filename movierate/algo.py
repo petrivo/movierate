@@ -30,30 +30,3 @@ class Node():
         in_list.append(self.data)
         if self.right:
             self.right.inorder(in_list)
-
-
-# a = Movie('A')
-# b = Movie('B')
-# d = Movie('D')
-# c = Movie('C')
-# f = Movie('F')
-
-
-# a.like_more_than(b)
-# a.like_more_than(c)
-# d.like_more_than(a)
-# a.like_more_than(f)
-# c.like_more_than(b)
-# b.like_more_than(d)
-# b.like_more_than(f)
-# c.like_more_than(d)
-# f.like_more_than(c)
-# d.like_more_than(f)
-
-# node = Node(a)
-# node.insert(b)
-# node.insert(c)
-# node.insert(d)
-# node.insert(f)
-
-# node.inorder()

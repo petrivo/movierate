@@ -44,11 +44,6 @@ async function renderMovie(database_id, movie_id, preferred) {
         </div>
         `;
     $('#movies').append(output);
-    // <form action="/compare">
-    //         <input type="hidden" id="db_id"  value="${database_id}">
-    //         <input type="hidden" id="preferred" value="${preferred}">
-    //         <input type="submit" value="Submit" class="btn btn-primary">
-    //         </form>
 }
 
 function moviePreferred(obj, database_id, preferred){
@@ -71,6 +66,20 @@ function moviePreferred(obj, database_id, preferred){
     });
 }
 
+async function renderPreferenceList(data){
+    console.log(data);
+    let output = '';
+    data.forEach(async function(e){
+        console.log(e);
+        const response = await fetch('http://www.omdbapi.com/?i=' + e + API_KEY);
+        const movie = await response.json(); //extract JSON from the http response
+        console.log(movie.Title)
+        output =`<li class="list-group-item">${movie.Title}</li>`;
+        console.log(output);
+        $('#movies_inorder').append(output);
+
+    });
+}
 
 function movieSelected(obj,movieSelected){
     console.log(obj);
