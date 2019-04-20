@@ -23,6 +23,22 @@ class UserMoviePreference(db.Model, ResourceMixin):
         super().__init__(**kwargs)
 
     @classmethod
+    def get_compare_for_user(cls, user_id):
+        compare_two = UserMoviePreference.query.filter(
+            UserMoviePreference.user_id == user_id,
+            UserMoviePreference.liked_more_than_the_other == None).first()
+
+        return [compare_two.id, compare_two.movie, compare_two.other_movie]
+
+    @classmethod
+    def update(cls, _id, liked_more):
+        pref = UserMoviePreference.query.get(_id)
+        print(pref)
+        pref.liked_more_than_the_other = liked_more
+        db.session.commit()
+        print(pref.liked_more_than_the_other)
+
+    @classmethod
     def add_seen_movie(cls, omdb_id, user_id):
         movie = Movie.query.filter(Movie.omdb_id == omdb_id).first()
 
@@ -72,11 +88,10 @@ class UserMoviePreference(db.Model, ResourceMixin):
             last_insertion = UserMoviePreference.query.get(seen_movie_ids[-1][0])
             last_insertion.other_movie_id = seen_movie_ids[0][1]
 
-            # !problem is in here see print statement after third insertion
-            other_movies = set(x for x in seen_movie_ids[1:-1][1])
-            print(other_movies)
-            for e in other_movies:
-                # other_movie_id = UserMoviePreference.query.get(e[0]).movie_id
+
+            sn_m = set(x[1] for x in seen_movie_ids[1:-1])
+            print(sn_m)
+            for e in sn_m:
                 other_movie_id = e
                 params = {
                     'user_id': user_id,
@@ -84,6 +99,8 @@ class UserMoviePreference(db.Model, ResourceMixin):
                     'other_movie_id': other_movie_id
                 }
                 usr_mov = UserMoviePreference(**params)
+
+                # TODO check if bulk_save is more efficient
                 usr_mov.save()
 
         return 'to be translated to json'

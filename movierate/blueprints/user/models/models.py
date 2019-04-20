@@ -47,29 +47,29 @@ class User(UserMixin, ResourceMixin, db.Model):
     def authenticated(self, password):
         return check_password_hash(self.password, password)
 
-    def generate_movie_comparison_list(self):
-        user_movies = UserMoviePreference.query.with_entities(
-            UserMoviePreference.movie_id).filter(
-            UserMoviePreference.user_id == self.id)
-        movies_without_preference = user_movies.filter(UserMoviePreference.
-                                                other_movie_id == None).distinct().all()
-        comp_list = []
+    # def generate_movie_comparison_list(self):
+    #     user_movies = UserMoviePreference.query.with_entities(
+    #         UserMoviePreference.movie_id).filter(
+    #         UserMoviePreference.user_id == self.id)
+    #     movies_without_preference = user_movies.filter(UserMoviePreference.
+    #                                             other_movie_id == None).distinct().all()
+    #     comp_list = []
 
-        for e in movies_without_preference:
-            movie = Movie.query.get(e[0])
-            comp_list.append(movie)
+    #     for e in movies_without_preference:
+    #         movie = Movie.query.get(e[0])
+    #         comp_list.append(movie)
         
-        vs = []
-        for i in range(len(comp_list)):
-            curr = comp_list[i]
-            for e in comp_list[i+1:]:  
-                compare = [curr, e]
-                vs.append(compare)
+    #     vs = []
+    #     for i in range(len(comp_list)):
+    #         curr = comp_list[i]
+    #         for e in comp_list[i+1:]:  
+    #             compare = [curr, e]
+    #             vs.append(compare)
 
-        self.comparing_list = vs
-        db.session.commit()
+    #     self.comparing_list = vs
+    #     db.session.commit()
 
-        return vs
+    #     return vs
 
     def increase_seen_movies_count(self):
         self.seen_movies_count += 1

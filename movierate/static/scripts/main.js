@@ -29,35 +29,41 @@ async function getMovie(text) {
     $('#movies').html(output);
 }
 
-async function renderMovie(id) {
+async function renderMovie(database_id, movie_id, preferred) {
     console.log('rendering');
-    const response = await fetch('http://www.omdbapi.com/?i=' + id + API_KEY);
+    const response = await fetch('http://www.omdbapi.com/?i=' + movie_id + API_KEY);
     const movie = await response.json(); //extract JSON from the http response
     let output = `
         <div class="col-md-3 col-sm-4">
         <div class="well text-center">
           <img src="${movie.Poster}">
           <h5>${movie.Title}</h5>
-          <a onclick="moviePreferred('${movie.imdbID}')" class="btn btn-primary mbtn">Prefer</a>
+            <a onclick="moviePreferred(this, '${database_id}', '${preferred}')" class="btn btn-primary mbtn">Prefer</a>
+          
         </div>
         </div>
         `;
     $('#movies').append(output);
+    // <form action="/compare">
+    //         <input type="hidden" id="db_id"  value="${database_id}">
+    //         <input type="hidden" id="preferred" value="${preferred}">
+    //         <input type="submit" value="Submit" class="btn btn-primary">
+    //         </form>
 }
 
-function moviePreferred(id){
-    console.log(id);
+function moviePreferred(obj, database_id, preferred){
+    console.log(database_id);
     $.ajax({
         type: "POST",
         url: '/preferred_movie',
-        data: JSON.stringify({'movie_id': id}),
+        data: JSON.stringify({'database_id': database_id, 'preferred': preferred}),
         // dataType: 'json', //commented out to have success running
         contentType: 'application/json',
         success: () => {
             console.log('success');
             $(obj).attr('class', 'btn btn-outline-success my-2 my-sm-0');
             $(obj).text('Selected')
-
+            location.reload()
         },
         error: () => {
             $(obj).attr('class', 'btn btn-danger my-2 my-sm-0');

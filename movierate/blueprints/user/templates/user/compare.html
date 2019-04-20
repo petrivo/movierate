@@ -19,7 +19,7 @@
 
 {% block scripts %} 
         <script type="text/javascript">
-            renderMovie("{{ data[0].omdb_id }}");
-            {#renderMovie("{{ data[0][1]['omdb_id'] }}");#}
+            renderMovie({{data[0]}}, "{{ data[1].omdb_id }}", 1);
+            renderMovie({{data[0]}}, "{{ data[2].omdb_id }}", 0);
         </script>  
 {% endblock %} 

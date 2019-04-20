@@ -45,11 +45,6 @@ def signout():
 @user.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
-    if request.method == 'POST':
-        # print('posted', file=sys.stderr)
-        print(request.get_json())
-        print(request.get_json()['movie_id'])
-
     # TODO display inorder if possible
 
     return render_template('user/dashboard.html')
@@ -66,12 +61,17 @@ def add_movie():
 
     return inserted
 
-@user.route('/compare')
+@user.route('/compare', methods=['GET', 'POST'])
 @login_required
 def compare():
-    # TODO has to be generated or rebuilt one time an later just used
-    current_user.generate_movie_comparison_list()
-    compare_two = current_user.comparing_list[-1]
+    if request.method == 'POST':
+        # _id = int(request.get_json()['database_id'])
+        # like_more_than_other = bool(int(request.get_json()['preferred']))
+        print(request.form.get('db_id'), file=sys.stderr)
+        print('POST')
+        # UserMoviePreference.update(_id, like_more_than_other)
+
+    compare_two = UserMoviePreference.get_compare_for_user(current_user.id)
     flash(compare_two)
     return render_template('user/compare.html', data=compare_two)
 
@@ -79,17 +79,9 @@ def compare():
 @user.route('/preferred_movie', methods=['POST'])
 @login_required
 def preferred():
-    movie_won = request.get_json()['movie_id']
-
-    competing_movies = current_user.comparing_list.pop()
-    print(competing_movies)
-    movie = competing_movies[0]
-    other_movie = competing_movies[1]
-
-    if movie.omdb_id == movie_von:
-        pass
+    _id = int(request.get_json()['database_id'])
+    like_more_than_other = bool(int(request.get_json()['preferred']))
+    print(_id, like_more_than_other)
+    UserMoviePreference.update(_id, like_more_than_other)
     
-    if movie[movie_von]:
-        pass 
-
-    pass
+    return 'ajax success'
