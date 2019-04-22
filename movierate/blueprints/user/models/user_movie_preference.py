@@ -56,6 +56,7 @@ class UserMoviePreference(db.Model, ResourceMixin):
         }
 
         usr_mov = UserMoviePreference(**params)
+        
         inserted = False
         # TODO should return json for ajax
         # TODO ? move it to general resource mixin?
@@ -64,17 +65,17 @@ class UserMoviePreference(db.Model, ResourceMixin):
             inserted = True
         except sqlalchemy.exc.SQLAlchemyError as err:
             print(err)
-
+        user = usr_mov.user
         # logic for automatic generation rows for comparison list
         seen_movie_ids = UserMoviePreference.query.with_entities(
             UserMoviePreference.id, UserMoviePreference.movie_id).filter(
-                UserMoviePreference.user_id == user_id, 
-                UserMoviePreference.liked_more_than_the_other == None). \
-                    distinct().all()
+                UserMoviePreference.user_id == user_id).distinct().all()
+                # UserMoviePreference.liked_more_than_the_other == None). \
+                    
 
         print(seen_movie_ids)
 
-        if inserted and len(seen_movie_ids) == 2:
+        if inserted and user.seen_movies_count == 2:
             # compare first to second and second to first
             # Potential problems of having two comparisons? or maybe create
             #   fiction movie for this case?
@@ -86,7 +87,7 @@ class UserMoviePreference(db.Model, ResourceMixin):
 
             db.session.commit()
 
-        if inserted and len(seen_movie_ids) > 2:
+        if inserted and user.seen_movies_count > 2:
             last_insertion = UserMoviePreference.query.get(seen_movie_ids[-1][0])
             last_insertion.other_movie_id = seen_movie_ids[0][1]
 

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
-from .forms import LoginForm
+from .forms import LoginForm, RegisterForm
 from .models.models import User
 from .models.user_movie_preference import UserMoviePreference
 from flask_login import login_required, login_user, current_user, logout_user
@@ -10,8 +10,26 @@ user = Blueprint('user', __name__, template_folder='templates')
 
 @user.route('/register', methods=['GET', 'POST'])
 def register():
-    # TODO
-    pass
+    if current_user.is_authenticated:
+        flash('You are already signed in')
+        return redirect(url_for('user.dashboard'))
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        print('form validated')
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        user = User(email=email, password=password)
+        user.save()
+        print(user)
+        login_user(user)
+
+        flash('welcome to the movierate')
+        return redirect(url_for('user.dashboard'))
+
+    return render_template('user/register.html', form=form)
 
 
 @user.route('/login', methods=['GET', 'POST'])
@@ -46,8 +64,10 @@ def signout():
 def dashboard():
     bst = current_user.update_tree()
     in_list = []
-    bst.inorder(in_list)
-    in_list = [x.title for x in in_list]
+    if bst:
+        bst.inorder(in_list)
+        in_list = [x.title for x in in_list]
+    print(in_list)
     return render_template('user/dashboard.html', data=json.dumps(in_list))
 
 
@@ -55,11 +75,10 @@ def dashboard():
 @login_required
 def add_movie():
     omdb_id = request.get_json()['movie_id']
-    inserted = UserMoviePreference.add_seen_movie(omdb_id, current_user.id)
-
     # if inserted: TODO check contition
     current_user.increase_seen_movies_count()
 
+    inserted = UserMoviePreference.add_seen_movie(omdb_id, current_user.id)
     return inserted
 
 

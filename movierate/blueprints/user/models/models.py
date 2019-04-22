@@ -56,9 +56,9 @@ class User(UserMixin, ResourceMixin, db.Model):
     def update_tree(self):
         user_preferences = self.user_movie_preference
         
-        print(user_preferences)
-        # print(user_preferences.all())
-        print(user_preferences[0].movie.omdb_id)
+        if len(user_preferences) == 0:
+            return False
+         
         movie_objs = []
 
         for pref in user_preferences:
@@ -74,7 +74,7 @@ class User(UserMixin, ResourceMixin, db.Model):
                 movie_objs.append(movie_obj)
 
             if other_movie_obj is None:
-                other_movie_obj = Mov(other_movie.title) # what? title?
+                other_movie_obj = Mov(other_movie.title)
                 movie_objs.append(other_movie_obj)
 
             if pref.liked_more_than_the_other:
@@ -82,9 +82,9 @@ class User(UserMixin, ResourceMixin, db.Model):
             else:
                 other_movie_obj.like_more_than(movie_obj)
 
-        node = Node(movie_objs[0])
+        node = Node()
 
-        for obj in movie_objs[1:]:
+        for obj in movie_objs:
             node.insert(obj)
 
         self.built_tree = node

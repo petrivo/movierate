@@ -66,18 +66,21 @@ function moviePreferred(obj, database_id, preferred){
     });
 }
 
+async function getById(e){
+    const response = await fetch('http://www.omdbapi.com/?i=' + e + API_KEY);
+    const movie = await response.json(); //extract JSON from the http response
+    return movie.Title;
+}
+
 async function renderPreferenceList(data){
     console.log(data);
     let output = '';
-    data.forEach(async function(e){
-        console.log(e);
-        const response = await fetch('http://www.omdbapi.com/?i=' + e + API_KEY);
-        const movie = await response.json(); //extract JSON from the http response
-        console.log(movie.Title)
-        output =`<li class="list-group-item">${movie.Title}</li>`;
-        console.log(output);
+    data.forEach( e =>{
+        output =`<li id='${e}' class="list-group-item"></li>`;
         $('#movies_inorder').append(output);
-
+    });
+    data.forEach(async e =>{
+        $(`#${e}`).text(await getById(e));
     });
 }
 
