@@ -5,10 +5,13 @@ from movierate.blueprints.user.views import user
 from movierate.blueprints.user.models.models import User
 
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_pyfile("../config/settings.py")
-    app.config.from_pyfile("../instance/settings.py", silent=True)
+def create_app(test_config=None):
+    app = Flask(__name__, instance_relative_config=True)
+    app.config.from_object("config.settings")
+    app.config.from_pyfile("settings.py", silent=True)
+
+    if test_config:
+        app.config.update(test_config)
 
     app.register_blueprint(page)
     app.register_blueprint(user)

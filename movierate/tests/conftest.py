@@ -9,5 +9,9 @@ def app():
 
     :return: Flask app
     """
-
+    settings = {
+        'DEBUG': False,
+        'TESTING': True,
+        'SQLA'
+    }
     app = create_app(test_settings=settings)
