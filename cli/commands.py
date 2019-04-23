@@ -1,6 +1,8 @@
 import click
 import subprocess
 
+import os
+
 
 @click.command()
 def start_app():
@@ -9,10 +11,14 @@ def start_app():
 
 
 @click.command()
+def loc():
+    subprocess.call('git ls-files | xargs wc -l', shell=True)
+
+@click.command()
 def dbinit():
     from movierate.app import create_app
     from movierate.extensions import db
-    from movierate.blueprints.user.models.models import User
+    from movierate.blueprints.user.models.user import User
 
     app = create_app()
     db.app = app
@@ -26,3 +32,11 @@ def dbinit():
     db.session.commit()
 
     click.echo('Seed user was created')
+
+
+@click.command()
+@click.argument('path', default=os.path.join('movierate', 'tests'))
+def tests(path):
+    click.echo('test')
+    cmd = 'py.test {0}'.format(path)
+    return subprocess.call(cmd, shell=True)

@@ -8,7 +8,6 @@ instance/settings.py
 movierate/__init__.py
 movierate/algo.py
 movierate/app.py
-movierate/dbinit.py
 movierate/extensions.py
 movierate/movie.py
 movierate.egg-info/PKG-INFO
@@ -25,4 +24,5 @@ movierate/blueprints/user/forms.py
 movierate/blueprints/user/views.py
 movierate/tests/__init__.py
 movierate/tests/conftest.py
-movierate/tests/imtest.py
+movierate/tests/page/__init__.py
+movierate/tests/page/test_views.py

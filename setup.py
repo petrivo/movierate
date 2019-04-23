@@ -10,8 +10,9 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        hello=cli.commands:hello
         start_app=cli.commands:start_app
         dbinit=cli.commands:dbinit
+        loc=cli.commands:loc
+        tests=cli.commands:tests
     ''',
 )

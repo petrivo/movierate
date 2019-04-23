@@ -2,7 +2,7 @@ from flask import Flask
 from movierate.extensions import login_manager, db
 from movierate.blueprints.page.views import page
 from movierate.blueprints.user.views import user
-from movierate.blueprints.user.models.models import User
+from movierate.blueprints.user.models.user import User
 
 
 def create_app(test_config=None):
@@ -18,7 +18,20 @@ def create_app(test_config=None):
 
     extensions(app)
 
+    register_errorhandlers(app)
+
     return app
+
+
+def register_errorhandlers(app):
+    def render_error(error):
+        error_code = getattr(error, 'code', 500)
+        return str(error_code)
+        # return render_template("{0}.html".format(error_code)), error_code
+
+    for errcode in [404, 500]:
+        app.errorhandler(errcode)(render_error)
+    return None
 
 
 def extensions(app):
