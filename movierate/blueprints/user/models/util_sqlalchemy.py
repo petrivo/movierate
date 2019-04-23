@@ -1,4 +1,4 @@
-from extensions import db
+from movierate.extensions import db
 
 
 class ResourceMixin():

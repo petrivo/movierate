@@ -1,6 +1,6 @@
-from app import create_app
-from extensions import db
-from blueprints.user.models.models import User
+from movierate.app import create_app
+from movierate.extensions import db
+from movierate.blueprints.user.models.models import User
 
 app = create_app()
 db.app = app

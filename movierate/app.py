@@ -1,8 +1,8 @@
 from flask import Flask
-from extensions import login_manager, db
-from blueprints.page.views import page
-from blueprints.user.views import user
-from blueprints.user.models.models import User
+from movierate.extensions import login_manager, db
+from movierate.blueprints.page.views import page
+from movierate.blueprints.user.views import user
+from movierate.blueprints.user.models.models import User
 
 
 def create_app():
@@ -26,8 +26,3 @@ def extensions(app):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(user_id)
-
-
-if __name__ == '__main__':
-    app = create_app()
-    app.run('0.0.0.0', 8000)

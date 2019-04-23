@@ -1,5 +1,5 @@
-from extensions import db
-from .util_sqlalchemy import ResourceMixin
+from movierate.extensions import db
+from movierate.blueprints.user.models.util_sqlalchemy import ResourceMixin
 
 class Movie(db.Model, ResourceMixin):
     id = db.Column(db.Integer, primary_key=True)

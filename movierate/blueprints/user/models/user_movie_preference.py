@@ -1,6 +1,6 @@
-from extensions import db
-from .movie_model import Movie
-from .util_sqlalchemy import ResourceMixin
+from movierate.extensions import db
+from movierate.blueprints.user.models.movie_model import Movie
+from movierate.blueprints.user.models.util_sqlalchemy import ResourceMixin
 import sqlalchemy
 
 

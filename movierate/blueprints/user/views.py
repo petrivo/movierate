@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, url_for, redirect, flash
-from .forms import LoginForm, RegisterForm
-from .models.models import User
-from .models.user_movie_preference import UserMoviePreference
+from movierate.blueprints.user.forms import LoginForm, RegisterForm
+from movierate.blueprints.user.models.models import User
+from movierate.blueprints.user.models.user_movie_preference import UserMoviePreference
 from flask_login import login_required, login_user, current_user, logout_user
 import json
 

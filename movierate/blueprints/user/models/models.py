@@ -1,11 +1,11 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from extensions import db
-from .movie_model import Movie
-from .user_movie_preference import UserMoviePreference
-from .util_sqlalchemy import ResourceMixin
-from algo import Node
-from movie import Movie as Mov
+from movierate.extensions import db
+from movierate.blueprints.user.models.movie_model import Movie
+from movierate.blueprints.user.models.user_movie_preference import UserMoviePreference
+from movierate.blueprints.user.models.util_sqlalchemy import ResourceMixin
+from movierate.algo import Node
+from movierate.movie import Movie as Mov
 
 
 class User(UserMixin, ResourceMixin, db.Model):
