@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from movierate.extensions import login_manager, db
 from movierate.blueprints.page.views import page
 from movierate.blueprints.user.views import user
@@ -26,11 +26,11 @@ def create_app(test_config=None):
 def register_errorhandlers(app):
     def render_error(error):
         error_code = getattr(error, 'code', 500)
-        return str(error_code)
-        # return render_template("{0}.html".format(error_code)), error_code
+        return render_template("errors/{0}.html".format(error_code)), error_code
 
     for errcode in [404, 500]:
         app.errorhandler(errcode)(render_error)
+        
     return None
 
 

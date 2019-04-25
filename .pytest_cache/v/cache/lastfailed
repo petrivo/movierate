@@ -1,0 +1,4 @@
+{
+  "movierate/tests/user/test_views.py::TestLogin::test_login_user": true,
+  "movierate/tests/user/test_views.py::TestLogin::test_logout": true
+}

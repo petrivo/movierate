@@ -1,0 +1,5 @@
+[
+  "movierate/tests/page/test_views.py::TestViews::test_index",
+  "movierate/tests/user/test_views.py::TestLogin::test_login_view",
+  "movierate/tests/user/test_views.py::TestLogin::test_login_user"
+]
