@@ -1,3 +1,23 @@
+body, html {
+  height: 100%;
+}
+.login {
+  background-color: lightgrey;
+}
+/* .Absolute-Center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.Absolute-Center.is-Responsive {
+  width: 50%; 
+  height: 50%;
+  min-width: 400px;
+  max-width: 400px;
+  padding: 40px;
+} */
+
 #movies img, #movie img{
     width:100%;
   }

@@ -1,12 +1,29 @@
 {% extends 'layouts/base.html' %}
+{% import 'macros/form.html' as f with context %}
+
+{% block header %}
+<img src="{{url_for('static', filename='images/film-solid.svg')}}" class="mx-auto d-block" width="178" height="176"
+  title="Movierate" alt="Movierate" />
+{% endblock %}
 
 {% block body %}
-<form method="POST" action="{{url_for('user.login')}}">
-  {{ form.csrf_token }}
-  {{form.email.label}}
-  {{form.email()}}
-  {{form.password.label}}
-  {{form.password()}}
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+  {% call f.form_tag(css_class="col-md-4 mx-auto card card-body bg-light", endpoint="user.login") %}
+    <legend class="text-center">Sign in to continue</legend>
+    {{ form.csrf_token }}
+    {{ f.form_group(form.email) }}
+    {{ f.form_group(form.password) }}
+    <div class="row">
+      <div class="col-md-6">
+        <button type="submit" class="btn btn-primary btn-block">
+          Sign in
+        </button>
+      </div>
+      <div class="col-md-6">
+        <div class="visible-xs visible-sm sm-margin-top"></div>
+        <a href="{{ url_for('user.register') }}" class="btn btn-default btn-block">
+          Register
+        </a>
+      </div>
+    </div>
+  {% endcall %}
 {% endblock %}

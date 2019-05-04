@@ -10,6 +10,6 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     email = StringField('Email', validators=[Email(), DataRequired(), Length(2, 150)])
-    password = PasswordField('Password', [DataRequired(),
-        EqualTo('confirm', message='Passwords must match')])
+    password = PasswordField('Password', validators=[Length(6, 64, "At least 6 characters long"),
+        DataRequired(), EqualTo('confirm', message='Passwords must match')])
     confirm = PasswordField('Repeat Password')

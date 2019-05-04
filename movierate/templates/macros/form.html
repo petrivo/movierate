@@ -1,0 +1,30 @@
+{# Render a form field's errors. #}
+{%- macro field_errors(f) -%}
+  {% if f.errors %}
+    <ul class="list-unstyled text-danger field-error">
+      {% for error in f.errors %}
+        <li>{{ error | e }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{%- endmacro -%}
+
+{# Render a form-group #}
+{% macro form_group(element, css_class='') %}
+    {% if element.errors %}
+        {% set css_class = css_class + ' has-error ' + kwargs.pop('class', '') %}
+    {% endif %}
+    <div class="form-group">
+        {{ element.label }}
+        {{ element(class='form-control') }}
+        {{ field_errors(element) }}
+    </div>
+{% endmacro %}
+
+{# render a form #}
+{% macro form_tag(endpoint, form_id='', css_class='', method='POST') %}
+    <form class="{{css_class}}" method="{{method}}" action="{{url_for(endpoint)}}" id="{{form_id}}">
+        {{ caller() }}
+        {{ form.csrf_token }}
+    </form>
+{% endmacro %}

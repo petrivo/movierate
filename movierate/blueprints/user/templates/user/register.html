@@ -1,19 +1,15 @@
 {% extends 'layouts/base.html' %}
+{% import 'macros/form.html' as f with context %}
 
 {% block body %}
-
-<form method="POST" action="{{url_for('user.register')}}">
+  {% call f.form_tag(css_class="col-md-4 mx-auto card card-body bg-light", endpoint="user.register") %}
+    <legend class="text-center">Register to use our service</legend>
     {{ form.csrf_token }}
-    {{form.email.label}}
-    {{form.email()}}
-
-    {{form.password.label}}
-    {{form.password()}}
-
-    {{form.confirm.label}}
-    {{form.confirm()}}
-
-    <button type="submit" class="btn btn-primary">Submit</button>
-
-</form>
+    {{ f.form_group(form.email) }}
+    {{ f.form_group(form.password) }}
+    {{ f.form_group(form.confirm) }}
+    <button type="submit" class="btn btn-primary btn-block mx-auto">
+        Register
+    </button>
+    {% endcall %}
 {% endblock %}

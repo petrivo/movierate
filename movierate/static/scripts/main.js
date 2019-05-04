@@ -15,6 +15,9 @@ async function getMovie(text) {
     let output = '';
     console.log(movies);
     movies.Search.forEach(movie => {
+        if(movie.Poster === "N/A"){
+            movie.Poster = '../static/images/noimage.jpg'
+        }
         output += `
         <div class="col-md-3 col-sm-4">
         <div class="well text-center">

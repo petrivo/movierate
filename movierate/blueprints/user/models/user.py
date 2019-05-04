@@ -23,13 +23,15 @@ class User(UserMixin, ResourceMixin, db.Model):
     # BST for movies that have been rated
     built_tree = db.Column(db.PickleType())
     comparing_list = db.Column(db.PickleType())
-    
+
     # Relationships
-    user_movie_preference = db.relationship(UserMoviePreference, backref='user')
+    user_movie_preference = db.relationship(
+        UserMoviePreference, backref='user')
 
     # Activity tracking
     sign_in_count = db.Column(db.Integer, nullable=False, default=0)
     seen_movies_count = db.Column(db.Integer, nullable=False, default=0)
+
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super().__init__(**kwargs)
@@ -55,17 +57,18 @@ class User(UserMixin, ResourceMixin, db.Model):
 
     def update_tree(self):
         user_preferences = self.user_movie_preference
-        
+
         if len(user_preferences) == 0:
             return False
-         
+
         movie_objs = []
 
         for pref in user_preferences:
             movie = Mov(pref.movie.omdb_id)
             other_movie = Mov(pref.other_movie.omdb_id)
 
-            movie_obj = next((x for x in movie_objs if x.title == movie.title), None)
+            movie_obj = next(
+                (x for x in movie_objs if x.title == movie.title), None)
             other_movie_obj = next(
                 (x for x in movie_objs if x.title == other_movie.title), None)
 
