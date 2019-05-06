@@ -42,10 +42,11 @@ def login():
 
     if form.validate_on_submit():
         user = User.find_by_email(email=request.form.get('email'))
-
+        remember = request.form.get('remember_me')
+        
         if user and user.authenticated(password=request.form.get('password')):
             flash('user password is:{0}'.format(user.password))
-            if login_user(user):
+            if login_user(user, remember=remember):
                 return redirect(url_for('user.dashboard'))
 
     return render_template('user/login.html', form=form)

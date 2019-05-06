@@ -12,6 +12,9 @@
     {{ form.csrf_token }}
     {{ f.form_group(form.email) }}
     {{ f.form_group(form.password) }}
+    <div class="form-check">
+      {{ form.remember_me() }} {{ form.remember_me.label }}
+    </div>
     <div class="row">
       <div class="col-md-6">
         <button type="submit" class="btn btn-primary btn-block">

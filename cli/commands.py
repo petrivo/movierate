@@ -7,7 +7,7 @@ import os
 @click.command()
 def start_app():
     subprocess.call(
-        'gunicorn -b 0.0.0.0:8000 --access-logfile - "movierate.app:create_app()"', shell=True)
+        'gunicorn -b 0.0.0.0:8100 --reload --access-logfile - "movierate.app:create_app()"', shell=True)
 
 
 @click.command()
