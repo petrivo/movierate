@@ -1,1 +1,6 @@
 instance
+raw
+.gitignore
+.pytest_cache
+.vscode
+cli
